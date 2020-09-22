@@ -1,3 +1,4 @@
+
 // Copyright © 2018 SkeletonView. All rights reserved.
 
 import Foundation
@@ -9,7 +10,6 @@ enum SkeletonEnvironmentKey: String {
 
 extension Dictionary {
     subscript (_ key: SkeletonEnvironmentKey) -> Value? {
-        // swiftlint:disable:next force_cast
         return self[key.rawValue as! Key]
     }
 }
@@ -19,7 +19,7 @@ func printSkeletonHierarchy(in view: UIView) {
 }
 
 func skeletonLog(_ message: String) {
-    if ProcessInfo.processInfo.environment[.debugMode] != nil {
+    if let _ = ProcessInfo.processInfo.environment[.debugMode] {
         print(message)
     }
 }
@@ -28,7 +28,7 @@ extension UIView {
     public var skeletonDescription: String {
         var description = "<\(type(of: self)): \(Unmanaged.passUnretained(self).toOpaque())"
         let subSkeletons = subviewsSkeletonables
-        if !subSkeletons.isEmpty {
+        if subSkeletons.count != 0 {
             description += " | (\(subSkeletons.count)) subSkeletons"
         }
         if isSkeletonable {

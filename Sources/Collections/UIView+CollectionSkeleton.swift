@@ -10,21 +10,22 @@ import UIKit
 
 extension UIView {
     func addDummyDataSourceIfNeeded() {
-        guard let collection = self as? CollectionSkeleton,
-            !ProcessInfo.isRunningXCTest else { return }
+        guard !(self is UITextView), let collection = self as? CollectionSkeleton,
+            !ProcessInfo.isRunningXCTest
+            else { return }
         status = .on
         collection.addDummyDataSource()
         collection.disableUserInteraction()
     }
     
     func updateDummyDataSourceIfNeeded() {
-        guard let collection = self as? CollectionSkeleton,
+        guard !(self is UITextView), let collection = self as? CollectionSkeleton,
             !ProcessInfo.isRunningXCTest else { return }
         collection.updateDummyDataSource()
     }
     
     func removeDummyDataSourceIfNeeded(reloadAfter reload: Bool = true) {
-        guard let collection = self as? CollectionSkeleton,
+        guard !(self is UITextView), let collection = self as? CollectionSkeleton,
             !ProcessInfo.isRunningXCTest else { return }
         status = .off
         collection.removeDummyDataSource(reloadAfter: reload)

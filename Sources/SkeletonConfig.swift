@@ -3,32 +3,32 @@
 import UIKit
 
 /// Used to store all config needed to activate the skeleton layer.
-struct SkeletonConfig {
+@objc public class SkeletonConfig: NSObject {
     /// Type of skeleton layer
-    let type: SkeletonType
+    @objc public let type: SkeletonType
     
     /// Colors used in skeleton layer
-    let colors: [UIColor]
+    @objc public let colors: [UIColor]
     
     /// If type is gradient, which gradient direction
-    let gradientDirection: GradientDirection?
+    @objc public let gradientDirection: GradientDirection?
     
     /// Specify if skeleton is animated or not
-    let animated: Bool
+    @objc public let animated: Bool
     
     /// Used to execute a custom animation
-    let animation: SkeletonLayerAnimation?
+    @objc public let animation: SkeletonLayerAnimation?
     
     ///  Transition style
-    var transition: SkeletonTransitionStyle
+    @objc public var transition: SkeletonTransitionStyle
     
-    init(
+    @objc public init(
         type: SkeletonType,
         colors: [UIColor],
         gradientDirection: GradientDirection? = nil,
         animated: Bool = false,
         animation: SkeletonLayerAnimation? = nil,
-        transition: SkeletonTransitionStyle = .crossDissolve(0.25)
+        transition: SkeletonTransitionStyle = SkeletonTransitionStyle(0.25)
         ) {
         self.type = type
         self.colors = colors
@@ -36,5 +36,6 @@ struct SkeletonConfig {
         self.animated = animated
         self.animation = animation
         self.transition = transition
+        super.init()
     }
 }

@@ -8,36 +8,35 @@
 
 import UIKit
 
-extension UIView {
-    enum Constants {
-        static let becomeActiveNotification = UIApplication.didBecomeActiveNotification
-        static let enterForegroundNotification = UIApplication.didEnterBackgroundNotification
-        static let willTerminateNotification = UIApplication.willTerminateNotification
-        static let needAnimatedSkeletonKey = "needAnimateSkeleton"
+@objc public extension UIView {
+    
+    @objc static let becomeActiveNotification = UIApplication.didBecomeActiveNotification
+    @objc static let enterForegroundNotification = UIApplication.didEnterBackgroundNotification
+    @objc static let willTerminateNotification = UIApplication.willTerminateNotification
+    @objc static let needAnimatedSkeletonKey = "needAnimateSkeleton"
+    
+    @objc func addAppNotificationsObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive), name: UIView.becomeActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterBackground), name: UIView.enterForegroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(willTerminateNotification), name: UIView.enterForegroundNotification, object: nil)
     }
     
-    func addAppNotificationsObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive), name: Constants.becomeActiveNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterBackground), name: Constants.enterForegroundNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(willTerminateNotification), name: Constants.enterForegroundNotification, object: nil)
-    }
-    
-    func removeAppNoticationsObserver() {
-        NotificationCenter.default.removeObserver(self, name: Constants.becomeActiveNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: Constants.enterForegroundNotification, object: nil)
+    @objc func removeAppNoticationsObserver() {
+        NotificationCenter.default.removeObserver(self, name: UIView.becomeActiveNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIView.enterForegroundNotification, object: nil)
     }
     
     @objc func appDidBecomeActive() {
-        if UserDefaults.standard.bool(forKey: Constants.needAnimatedSkeletonKey) {
+        if UserDefaults.standard.bool(forKey: UIView.needAnimatedSkeletonKey) {
             startSkeletonAnimation()
         }
     }
     
     @objc func appDidEnterBackground() {
-        UserDefaults.standard.set((isSkeletonActive && isSkeletonAnimated), forKey: Constants.needAnimatedSkeletonKey)
+        UserDefaults.standard.set((isSkeletonActive && isSkeletonAnimated), forKey: UIView.needAnimatedSkeletonKey)
     }
     
     @objc func willTerminateNotification() {
-        UserDefaults.standard.set(false, forKey: Constants.needAnimatedSkeletonKey)
+        UserDefaults.standard.set(false, forKey: UIView.needAnimatedSkeletonKey)
     }
 }

@@ -9,15 +9,15 @@ enum MultilineAssociatedKeys {
     static var paddingInsets = "paddingInsets"
 }
 
-protocol ContainsMultilineText {
+@objc public protocol ContainsMultilineText {
 	var multilineTextFont: UIFont? { get }
-    var numLines: Int { get }
+    @objc func numLines() -> Int
     var lastLineFillingPercent: Int { get }
     var multilineCornerRadius: Int { get }
     var multilineSpacing: CGFloat { get }
     var paddingInsets: UIEdgeInsets { get }
 }
 
-extension ContainsMultilineText {
-    var numLines: Int { return 0 }
+ public extension ContainsMultilineText {
+    func numLines() -> Int { return 0 }
 }

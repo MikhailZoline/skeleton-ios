@@ -13,22 +13,33 @@ enum CollectionAssociatedKeys {
     static var dummyDelegate = "dummyDelegate"
 }
 
-protocol CollectionSkeleton {
-    var skeletonDataSource: SkeletonCollectionDataSource? { get set }
-    var skeletonDelegate: SkeletonCollectionDelegate? { get set }
-    var estimatedNumberOfRows: Int { get }
+@objc public protocol CollectionSkeleton {
+    @objc var skeletonDataSource: SkeletonCollectionDataSource? { get set }
+    @objc var skeletonDelegate: SkeletonCollectionDelegate? { get set }
+    @objc var estimatedNumberOfRows: Int { get }
     
-    func addDummyDataSource()
-    func updateDummyDataSource()
-    func removeDummyDataSource(reloadAfter: Bool)
-    func disableUserInteraction()
-    func enableUserInteraction()
+    @objc func addDummyDataSource()
+    @objc func updateDummyDataSource()
+    @objc func removeDummyDataSource(reloadAfter: Bool)
+    @objc func disableUserInteraction()
+    @objc func enableUserInteraction()
 }
 
-extension CollectionSkeleton where Self: UIScrollView {
-    var estimatedNumberOfRows: Int { return 0 }
-    func addDummyDataSource() {}
-    func removeDummyDataSource(reloadAfter: Bool) {}
-    func disableUserInteraction() { isUserInteractionEnabled = false; isScrollEnabled = false }
-    func enableUserInteraction() { isUserInteractionEnabled = true; isScrollEnabled = true }
+@objc extension UIScrollView: CollectionSkeleton {
+    @objc public var skeletonDataSource: SkeletonCollectionDataSource? {
+        get {return nil} set {}
+    }
+    @objc public var skeletonDelegate: SkeletonCollectionDelegate? {
+        get {return nil} set {}
+    }
+    @objc  public func disableUserInteraction() {
+        isUserInteractionEnabled = false; isScrollEnabled = false
+    }
+    @objc  public func  enableUserInteraction() {
+        isUserInteractionEnabled = true; isScrollEnabled = true
+    }
+    @objc public var estimatedNumberOfRows: Int { return 0 }
+    @objc public func addDummyDataSource() {}
+    @objc public func updateDummyDataSource() {}
+    @objc public func removeDummyDataSource(reloadAfter: Bool) {}
 }

@@ -8,18 +8,18 @@
 
 import UIKit
 
-public struct SkeletonGradient {
-    private let gradientColors: [UIColor]
+@objc public class SkeletonGradient: NSObject {
+    @objc public var gradientColors: [UIColor]
     
-    public var colors: [UIColor] {
+    @objc public var colors: [UIColor] {
         return gradientColors
     }
     
-    public init(baseColor: UIColor, secondaryColor: UIColor? = nil) {
-        if let secondary = secondaryColor {
-            self.gradientColors = [baseColor, secondary, baseColor]
-        } else {
-            self.gradientColors = baseColor.makeGradient()
-        }
+    @objc public init(baseColor: UIColor, secondaryColor: UIColor) {
+        self.gradientColors = [baseColor, secondaryColor, baseColor]
+    }
+    
+    @objc public init(baseColor: UIColor) {
+        self.gradientColors = baseColor.makeGradient()
     }
 }

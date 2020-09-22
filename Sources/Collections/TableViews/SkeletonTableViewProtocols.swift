@@ -8,15 +8,15 @@
 
 import UIKit
 
-public protocol SkeletonTableViewDataSource: UITableViewDataSource {
-    func numSections(in collectionSkeletonView: UITableView) -> Int
-    func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int
-    func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier
+@objc public protocol SkeletonTableViewDataSource: UITableViewDataSource {
+    @objc func numSections(in collectionSkeletonView: UITableView) -> Int
+    @objc func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int
+    @objc func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier
 }
 
 public extension SkeletonTableViewDataSource {
     func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return skeletonView.estimatedNumberOfRows
+        return Int(ceil(skeletonView.frame.height/skeletonView.rowHeight))
     }
     
     func numSections(in collectionSkeletonView: UITableView) -> Int { return 1 }
@@ -29,17 +29,17 @@ public extension SkeletonTableViewDataSource {
     }
 }
 
-public protocol SkeletonTableViewDelegate: UITableViewDelegate {
-    func collectionSkeletonView(_ skeletonView: UITableView, identifierForHeaderInSection section: Int) -> ReusableHeaderFooterIdentifier?
-    func collectionSkeletonView(_ skeletonView: UITableView, identifierForFooterInSection section: Int) -> ReusableHeaderFooterIdentifier?
+@objc public protocol SkeletonTableViewDelegate: UITableViewDelegate {
+    @objc func collectionSkeletonView(_ skeletonView: UITableView, identifierForHeaderInSection section: Int) -> ReusableHeaderFooterIdentifier?
+    @objc func collectionSkeletonView(_ skeletonView: UITableView, identifierForFooterInSection section: Int) -> ReusableHeaderFooterIdentifier?
 }
 
-public extension SkeletonTableViewDelegate {
-    func collectionSkeletonView(_ skeletonView: UITableView, identifierForHeaderInSection section: Int) -> ReusableHeaderFooterIdentifier? {
-        return nil
-    }
-
-    func collectionSkeletonView(_ skeletonView: UITableView, identifierForFooterInSection section: Int) -> ReusableHeaderFooterIdentifier? {
-        return nil
-    }
-}
+//public extension SkeletonTableViewDelegate {
+//    func collectionSkeletonView(_ skeletonView: UITableView, identifierForHeaderInSection section: Int) -> ReusableHeaderFooterIdentifier? {
+//        return nil
+//    }
+//
+//    func collectionSkeletonView(_ skeletonView: UITableView, identifierForFooterInSection section: Int) -> ReusableHeaderFooterIdentifier? {
+//        return nil
+//    }
+//}

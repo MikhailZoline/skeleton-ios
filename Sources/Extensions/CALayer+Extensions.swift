@@ -8,7 +8,7 @@
 
 import UIKit
 
-extension CALayer {
+@objc public extension CALayer {
     @objc func tint(withColors colors: [UIColor]) {
         skeletonSublayers.recursiveSearch(leafBlock: {
             backgroundColor = colors.first?.cgColor
@@ -18,8 +18,8 @@ extension CALayer {
     }
 }
 
-extension CAGradientLayer {
-    override func tint(withColors colors: [UIColor]) {
+@objc public extension CAGradientLayer {
+    @objc override func tint(withColors colors: [UIColor]) {
         skeletonSublayers.recursiveSearch(leafBlock: {
             self.colors = colors.map { $0.cgColor }
         }) {
@@ -28,29 +28,44 @@ extension CAGradientLayer {
     }
 }
 
-struct SkeletonMultilinesLayerConfig {
-	var lines: Int
-	var lineHeight: CGFloat?
-	var type: SkeletonType
-	var lastLineFillPercent: Int
-	var multilineCornerRadius: Int
-	var multilineSpacing: CGFloat
-	var paddingInsets: UIEdgeInsets
+@objc public class SkeletonMultilinesLayerConfig: NSObject {
+	@objc public var lines: Int
+	@objc public var lineHeight: CGFloat
+    @objc public var type: SkeletonType
+	@objc public var lastLineFillPercent: Int
+	@objc public var multilineCornerRadius: Int
+	@objc public var multilineSpacing: CGFloat
+	@objc public var paddingInsets: UIEdgeInsets
+    @objc public init( lines: Int, type: SkeletonType,
+                       lineHeight: CGFloat = 0,
+                       lastLineFillPercent: Int,
+                       multilineCornerRadius: Int,
+                       multilineSpacing: CGFloat,
+                       paddingInsets: UIEdgeInsets) {
+        self.lines = lines
+        self.lineHeight = lineHeight
+        self.type = type
+        self.lastLineFillPercent = lastLineFillPercent
+        self.multilineCornerRadius = multilineCornerRadius
+        self.multilineSpacing = multilineSpacing
+        self.paddingInsets = paddingInsets
+        super.init()
+    }
 }
 
-// MARK: Skeleton sublayers
-extension CALayer {
-    static let skeletonSubLayersName = "SkeletonSubLayersName"
 
-    var skeletonSublayers: [CALayer] {
+// MARK: Skeleton sublayers
+@objc extension CALayer {
+    @objc public static let skeletonSubLayersName = "SkeletonSubLayersName"
+
+    @objc public var skeletonSublayers: [CALayer] {
         return sublayers?.filter { $0.name == CALayer.skeletonSubLayersName } ?? [CALayer]()
     }
     
-	func addMultilinesLayers(for config: SkeletonMultilinesLayerConfig) {
+	@objc public func addMultilinesLayers(for config: SkeletonMultilinesLayerConfig) {
         let numberOfSublayers = config.lines == 1 ? 1 : calculateNumLines(for: config)
-        var height = config.lineHeight ?? SkeletonAppearance.default.multilineHeight
-        
-        if numberOfSublayers == 1 && SkeletonAppearance.default.renderSingleLineAsView {
+        var height = config.lineHeight == 0 ? SkeletonAppearance.shared.multilineHeight : config.lineHeight
+        if numberOfSublayers == 1 {
             height = bounds.height
         }
 
@@ -72,15 +87,14 @@ extension CALayer {
         }
     }
 
-    func updateMultilinesLayers(for config: SkeletonMultilinesLayerConfig) {
+    @objc public func updateMultilinesLayers(for config: SkeletonMultilinesLayerConfig) {
         let currentSkeletonSublayers = skeletonSublayers
         let numberOfSublayers = currentSkeletonSublayers.count
         let lastLineFillPercent = config.lastLineFillPercent
         let paddingInsets = config.paddingInsets
         let multilineSpacing = config.multilineSpacing
-        var height = config.lineHeight ?? SkeletonAppearance.default.multilineHeight
-        
-        if numberOfSublayers == 1 && SkeletonAppearance.default.renderSingleLineAsView {
+        var height = config.lineHeight == 0 ? SkeletonAppearance.shared.multilineHeight : config.lineHeight
+        if numberOfSublayers == 1 {
             height = bounds.height
         }
         
@@ -90,7 +104,7 @@ extension CALayer {
         }
     }
 
-    private func calculatedWidthForLine(at index: Int, totalLines: Int, lastLineFillPercent: Int, paddingInsets: UIEdgeInsets) -> CGFloat {
+    @objc public func calculatedWidthForLine(at index: Int, totalLines: Int, lastLineFillPercent: Int, paddingInsets: UIEdgeInsets) -> CGFloat {
         var width = bounds.width - paddingInsets.left - paddingInsets.right
         if index == totalLines - 1 && totalLines != 1 {
             width = width * CGFloat(lastLineFillPercent) / 100
@@ -98,26 +112,25 @@ extension CALayer {
         return width
     }
 
-    func updateLayerFrame(for index: Int, size: CGSize, multilineSpacing: CGFloat, paddingInsets: UIEdgeInsets) {
-        let spaceRequiredForEachLine = SkeletonAppearance.default.multilineHeight + multilineSpacing
-        frame = CGRect(x: paddingInsets.left, y: CGFloat(index) * spaceRequiredForEachLine + paddingInsets.top, width: size.width, height: size.height - paddingInsets.bottom - paddingInsets.top)
+    @objc public func updateLayerFrame(for index: Int, size: CGSize, multilineSpacing: CGFloat, paddingInsets: UIEdgeInsets) {
+        let spaceRequiredForEachLine = SkeletonAppearance.shared.multilineHeight + multilineSpacing
+        frame = CGRect(x: paddingInsets.left, y: CGFloat(index) * spaceRequiredForEachLine + paddingInsets.top, width: size.width, height: size.height)
     }
 
-	private func calculateNumLines(for config: SkeletonMultilinesLayerConfig) -> Int {
-		let requiredSpaceForEachLine = (config.lineHeight ?? SkeletonAppearance.default.multilineHeight) + config.multilineSpacing
-		var numberOfSublayers = Int(round(CGFloat(bounds.height - config.paddingInsets.top - config.paddingInsets.bottom) / CGFloat(requiredSpaceForEachLine)))
-		if config.lines != 0, config.lines <= numberOfSublayers { numberOfSublayers = config.lines }
+	@objc public func calculateNumLines(for config: SkeletonMultilinesLayerConfig) -> Int {
+        let requiredSpaceForEachLine = (config.lineHeight == 0 ? SkeletonAppearance.shared.multilineHeight : config.lineHeight) + config.multilineSpacing
+		var numberOfSublayers = Int(round(CGFloat(bounds.height - config.paddingInsets.top - config.paddingInsets.bottom)/CGFloat(requiredSpaceForEachLine)))
+		if config.lines != 0,  config.lines <= numberOfSublayers { numberOfSublayers = config.lines }
         return numberOfSublayers
     }
 }
 
 // MARK: Animations
-public extension CALayer {
-    var pulse: CAAnimation {
+@objc public extension CALayer {
+    @objc var pulse: CAAnimation {
         let pulseAnimation = CABasicAnimation(keyPath: #keyPath(CALayer.backgroundColor))
         pulseAnimation.fromValue = backgroundColor
-        //swiftlint:disable:next force_unwrapping
-        pulseAnimation.toValue = UIColor(cgColor: backgroundColor!).complementaryColor.cgColor
+        pulseAnimation.toValue = UIColor(cgColor: backgroundColor ?? UIColor.lightGray.cgColor).complementaryColor.cgColor
         pulseAnimation.duration = 1
         pulseAnimation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         pulseAnimation.autoreverses = true
@@ -126,14 +139,14 @@ public extension CALayer {
         return pulseAnimation
     }
     
-    var sliding: CAAnimation {
+    @objc var sliding: CAAnimation {
         let startPointAnim = CABasicAnimation(keyPath: #keyPath(CAGradientLayer.startPoint))
         startPointAnim.fromValue = CGPoint(x: -1, y: 0.5)
-        startPointAnim.toValue = CGPoint(x: 1, y: 0.5)
+        startPointAnim.toValue = CGPoint(x:1, y: 0.5)
         
         let endPointAnim = CABasicAnimation(keyPath: #keyPath(CAGradientLayer.endPoint))
         endPointAnim.fromValue = CGPoint(x: 0, y: 0.5)
-        endPointAnim.toValue = CGPoint(x: 2, y: 0.5)
+        endPointAnim.toValue = CGPoint(x:2, y: 0.5)
         
         let animGroup = CAAnimationGroup()
         animGroup.animations = [startPointAnim, endPointAnim]
@@ -145,7 +158,11 @@ public extension CALayer {
         return animGroup
     }
     
-    func playAnimation(_ anim: SkeletonLayerAnimation, key: String, completion: (() -> Void)? = nil) {
+    @objc var angled: CAAnimation {
+        return SkeletonAnimationBuilder().makeSlidingAnimation(withDirection: GradientDirection.topLeftBottomRight, duration: 2.0)(self)
+    }
+    
+    @objc func playAnimation(_ anim: SkeletonLayerAnimation, key: String, completion: (() -> Void)? = nil) {
         skeletonSublayers.recursiveSearch(leafBlock: {
             DispatchQueue.main.async { CATransaction.begin() }
             DispatchQueue.main.async { CATransaction.setCompletionBlock(completion) }
@@ -156,7 +173,7 @@ public extension CALayer {
         }
     }
     
-    func stopAnimation(forKey key: String) {
+    @objc func stopAnimation(forKey key: String) {
         skeletonSublayers.recursiveSearch(leafBlock: {
             removeAnimation(forKey: key)
         }) {
@@ -165,8 +182,8 @@ public extension CALayer {
     }
 }
 
-extension CALayer {
-    func setOpacity(from: Int, to: Int, duration: TimeInterval, completion: (() -> Void)?) {
+@objc public extension CALayer {
+    @objc func setOpacity(from: Int, to: Int, duration: TimeInterval, completion: (() -> Void)?) {
         DispatchQueue.main.async { CATransaction.begin() }
         let animation = CABasicAnimation(keyPath: #keyPath(CALayer.opacity))
         animation.fromValue = from

@@ -2,30 +2,31 @@
 
 import UIKit
 
-public extension UIView {
+@objc public extension UIView {
     @IBInspectable
-    var isSkeletonable: Bool {
+    @objc var isSkeletonable: Bool {
         get { return skeletonable }
         set { skeletonable = newValue }
     }
-
+    
     @IBInspectable
-    var skeletonCornerRadius: Float {
+    @objc var skeletonCornerRadius: Float {
         get { return skeletonableCornerRadius }
         set { skeletonableCornerRadius = newValue }
     }
     
-    var isSkeletonActive: Bool {
-        return status == .on || subviewsSkeletonables.contains(where: { $0.isSkeletonActive })
+    @objc var isSkeletonActive: Bool {
+        return status == .on || (subviewsSkeletonables.first(where: { $0.isSkeletonActive }) != nil)
     }
-
-    private var skeletonable: Bool {
-        get { return ao_get(pkey: &ViewAssociatedKeys.skeletonable) as? Bool ?? false }
+    
+    @objc var skeletonable: Bool {
+        get { return ao_get(pkey: &ViewAssociatedKeys.skeletonable) != nil }
         set { ao_set(newValue, pkey: &ViewAssociatedKeys.skeletonable) }
     }
-
-    private var skeletonableCornerRadius: Float {
-        get { return ao_get(pkey: &ViewAssociatedKeys.skeletonCornerRadius) as? Float ?? 0.0 }
+    
+    var skeletonableCornerRadius: Float {
+        get { return ao_get(pkey:&ViewAssociatedKeys.skeletonCornerRadius) as? Float ?? 0.0 }
         set { ao_set(newValue, pkey: &ViewAssociatedKeys.skeletonCornerRadius) }
     }
 }
+

@@ -2,36 +2,37 @@
 
 import UIKit
 
-public protocol Appearance {
-    var tintColor: UIColor { get set }
-    var gradient: SkeletonGradient { get set }
-    var multilineHeight: CGFloat { get set }
-    var multilineSpacing: CGFloat { get set }
-    var multilineLastLineFillPercent: Int { get set }
-    var multilineCornerRadius: Int { get set }
-    var renderSingleLineAsView: Bool { get set }
+@objc public protocol Appearance {
+    @objc var tintColor: UIColor { get set }
+    @objc var gradient: SkeletonGradient { get set }
+    @objc var multilineHeight: CGFloat { get set }
+    @objc var multilineSpacing: CGFloat { get set }
+    @objc var multilineLastLineFillPercent: Int { get set }
+    @objc var multilineCornerRadius: Int { get set }
+    @objc var renderSingleLineAsView: Bool { get set }
 }
 
-public enum SkeletonAppearance {
-    public static var `default`: Appearance = SkeletonViewAppearance.shared
+@objc public class SkeletonAppearance: NSObject  {
+    @objc public static var shared: Appearance = SkeletonViewAppearance.shared
 }
 
-// codebeat:disable[TOO_MANY_IVARS]
-class SkeletonViewAppearance: Appearance {
-    static var shared = SkeletonViewAppearance()
 
-    var tintColor: UIColor = .skeletonDefault
+@objc class SkeletonViewAppearance: NSObject, Appearance {
+    @objc public static var shared = SkeletonViewAppearance()
 
-    var gradient = SkeletonGradient(baseColor: .skeletonDefault)
+    @objc var tintColor: UIColor = .skeletonDefault
+    @objc var shadeColor: UIColor = .skeletonShade
 
-    var multilineHeight: CGFloat = 15
+    @objc var gradient: SkeletonGradient = SkeletonGradient(baseColor: .skeletonDefault, secondaryColor: .skeletonShade)
 
-    var multilineSpacing: CGFloat = 10
+    @objc var multilineHeight: CGFloat = 15
 
-    var multilineLastLineFillPercent: Int = 70
+    @objc var multilineSpacing: CGFloat = 10
 
-    var multilineCornerRadius: Int = 0
+    @objc var multilineLastLineFillPercent: Int = 70
+
+    @objc var multilineCornerRadius: Int = 0
     
-    var renderSingleLineAsView: Bool = false
+    @objc var renderSingleLineAsView: Bool = false
 }
-// codebeat:enable[TOO_MANY_IVARS]
+

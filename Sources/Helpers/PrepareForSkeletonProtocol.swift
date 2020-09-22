@@ -44,13 +44,3 @@ extension UIImageView {
         }
     }
 }
-
-extension UIButton {
-    override func prepareViewForSkeleton() {
-        backgroundColor = .clear
-        startTransition { [weak self] in
-            self?.setTitle(nil, for: .normal)
-            self?.isUserInteractionEnabled = false
-        }
-    }
-}

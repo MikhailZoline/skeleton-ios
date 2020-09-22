@@ -2,58 +2,49 @@
 
 import UIKit
 
-protocol SkeletonFlowDelegate: AnyObject {
-    func willBeginShowingSkeletons(rootView: UIView)
-    func didShowSkeletons(rootView: UIView)
-    func willBeginUpdatingSkeletons(rootView: UIView)
-    func didUpdateSkeletons(rootView: UIView)
-    func willBeginLayingSkeletonsIfNeeded(rootView: UIView)
-    func didLayoutSkeletonsIfNeeded(rootView: UIView)
-    func willBeginHidingSkeletons(rootView: UIView)
-    func didHideSkeletons(rootView: UIView)
+@objc public protocol SkeletonFlowDelegate {
+    @objc func willBeginShowingSkeletons(rootView: UIView)
+    @objc func didShowSkeletons(rootView: UIView)
+    @objc func willBeginUpdatingSkeletons(rootView: UIView)
+    @objc func didUpdateSkeletons(rootView: UIView)
+    @objc func willBeginLayingSkeletonsIfNeeded(rootView: UIView)
+    @objc func didLayoutSkeletonsIfNeeded(rootView: UIView)
+    @objc func willBeginHidingSkeletons(rootView: UIView)
+    @objc func didHideSkeletons(rootView: UIView)
 }
 
-class SkeletonFlowHandler: SkeletonFlowDelegate {
-    func willBeginShowingSkeletons(rootView: UIView) {
-        NotificationCenter.default.post(name: .willBeginShowingSkeletons, object: rootView, userInfo: nil)
+@objc public class SkeletonFlowHandler: NSObject, SkeletonFlowDelegate {
+    @objc public func willBeginShowingSkeletons(rootView: UIView) {
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "willBeginShowingSkeletons"), object: rootView, userInfo: nil)
         rootView.addAppNotificationsObservers()
     }
 
-    func didShowSkeletons(rootView: UIView) {
+    @objc public func didShowSkeletons(rootView: UIView) {
         printSkeletonHierarchy(in: rootView)
-        NotificationCenter.default.post(name: .didShowSkeletons, object: rootView, userInfo: nil)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "didShowSkeletons"), object: rootView, userInfo: nil)
     }
 
-    func willBeginUpdatingSkeletons(rootView: UIView) {
-        NotificationCenter.default.post(name: .willBeginUpdatingSkeletons, object: rootView, userInfo: nil)
+    @objc public func willBeginUpdatingSkeletons(rootView: UIView) {
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "willBeginUpdatingSkeletons"), object: rootView, userInfo: nil)
     }
 
-    func didUpdateSkeletons(rootView: UIView) {
-        NotificationCenter.default.post(name: .didUpdateSkeletons, object: rootView, userInfo: nil)
+    @objc public func didUpdateSkeletons(rootView: UIView) {
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "didUpdateSkeletons"), object: rootView, userInfo: nil)
     }
 
-    func willBeginLayingSkeletonsIfNeeded(rootView: UIView) {
+     @objc public func willBeginLayingSkeletonsIfNeeded(rootView: UIView) {
     }
 
-    func didLayoutSkeletonsIfNeeded(rootView: UIView) {
+     @objc public func didLayoutSkeletonsIfNeeded(rootView: UIView) {
     }
 
-    func willBeginHidingSkeletons(rootView: UIView) {
-        NotificationCenter.default.post(name: .willBeginHidingSkeletons, object: rootView, userInfo: nil)
+     @objc public func willBeginHidingSkeletons(rootView: UIView) {
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue:"willBeginHidingSkeletons"), object: rootView, userInfo: nil)
         rootView.removeAppNoticationsObserver()
     }
 
-    func didHideSkeletons(rootView: UIView) {
+     @objc public func didHideSkeletons(rootView: UIView) {
         rootView.flowDelegate = nil
-        NotificationCenter.default.post(name: .didHideSkeletons, object: rootView, userInfo: nil)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "didHideSkeletons"), object: rootView, userInfo: nil)
     }
-}
-
-public extension Notification.Name {
-    static let willBeginShowingSkeletons = Notification.Name("willBeginShowingSkeletons")
-    static let didShowSkeletons = Notification.Name("didShowSkeletons")
-    static let willBeginUpdatingSkeletons = Notification.Name("willBeginUpdatingSkeletons")
-    static let didUpdateSkeletons = Notification.Name("didUpdateSkeletons")
-    static let willBeginHidingSkeletons = Notification.Name("willBeginHidingSkeletons")
-    static let didHideSkeletons = Notification.Name("didHideSkeletons")
 }

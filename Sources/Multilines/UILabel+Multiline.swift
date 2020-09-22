@@ -8,50 +8,48 @@ public extension UILabel {
         get { return lastLineFillingPercent }
         set { lastLineFillingPercent = min(newValue, 100) }
     }
-    
     @IBInspectable
     var linesCornerRadius: Int {
         get { return multilineCornerRadius }
         set { multilineCornerRadius = min(newValue, 10) }
     }
-    
     @IBInspectable
     var skeletonLineSpacing: CGFloat {
         get { return multilineSpacing }
         set { multilineSpacing = min(newValue, 10) }
     }
-    
+    @IBInspectable
     var skeletonPaddingInsets: UIEdgeInsets {
         get { return paddingInsets }
         set { paddingInsets = newValue }
     }
 }
 
-extension UILabel: ContainsMultilineText {
-	var multilineTextFont: UIFont? {
+@objc extension UILabel: ContainsMultilineText {
+    public var multilineTextFont: UIFont? {
 		return font
 	}
 	
-    var numLines: Int {
+    @objc public func numLines() -> Int {
         return numberOfLines
     }
 
-    var lastLineFillingPercent: Int {
-        get { return ao_get(pkey: &MultilineAssociatedKeys.lastLineFillingPercent) as? Int ?? SkeletonAppearance.default.multilineLastLineFillPercent }
+    public var lastLineFillingPercent: Int {
+        get { return ao_get(pkey: &MultilineAssociatedKeys.lastLineFillingPercent) as? Int ?? SkeletonAppearance.shared.multilineLastLineFillPercent }
         set { ao_set(newValue, pkey: &MultilineAssociatedKeys.lastLineFillingPercent) }
     }
 
-    var multilineCornerRadius: Int {
-        get { return ao_get(pkey: &MultilineAssociatedKeys.multilineCornerRadius) as? Int ?? SkeletonAppearance.default.multilineCornerRadius }
+    public var multilineCornerRadius: Int {
+        get { return ao_get(pkey: &MultilineAssociatedKeys.multilineCornerRadius) as? Int ?? SkeletonAppearance.shared.multilineCornerRadius }
         set { ao_set(newValue, pkey: &MultilineAssociatedKeys.multilineCornerRadius) }
     }
 
-    var multilineSpacing: CGFloat {
-        get { return ao_get(pkey: &MultilineAssociatedKeys.multilineSpacing) as? CGFloat ?? SkeletonAppearance.default.multilineSpacing }
+    public var multilineSpacing: CGFloat {
+        get { return ao_get(pkey: &MultilineAssociatedKeys.multilineSpacing) as? CGFloat ?? SkeletonAppearance.shared.multilineSpacing }
         set { ao_set(newValue, pkey: &MultilineAssociatedKeys.multilineSpacing) }
     }
 
-    var paddingInsets: UIEdgeInsets {
+    public var paddingInsets: UIEdgeInsets {
         get { return ao_get(pkey: &MultilineAssociatedKeys.paddingInsets) as? UIEdgeInsets ?? .zero }
         set { ao_set(newValue, pkey: &MultilineAssociatedKeys.paddingInsets) }
     }

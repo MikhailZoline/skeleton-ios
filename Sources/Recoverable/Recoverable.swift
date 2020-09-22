@@ -16,7 +16,7 @@ protocol Recoverable {
 extension UIView: Recoverable {
     var viewState: RecoverableViewState? {
         get { return ao_get(pkey: &ViewAssociatedKeys.viewState) as? RecoverableViewState }
-        set { ao_setOptional(newValue, pkey: &ViewAssociatedKeys.viewState) }
+        set {ao_setOptional(newValue, pkey: &ViewAssociatedKeys.viewState) }
     }
     
     @objc func saveViewState() {
@@ -37,7 +37,7 @@ extension UIView: Recoverable {
     }
 }
 
-extension UILabel {
+extension UILabel{
     var labelState: RecoverableTextViewState? {
         get { return ao_get(pkey: &ViewAssociatedKeys.labelViewState) as? RecoverableTextViewState }
         set { ao_setOptional(newValue, pkey: &ViewAssociatedKeys.labelViewState) }
@@ -58,7 +58,7 @@ extension UILabel {
     }
 }
 
-extension UITextView {
+extension UITextView{
     var textState: RecoverableTextViewState? {
         get { return ao_get(pkey: &ViewAssociatedKeys.labelViewState) as? RecoverableTextViewState }
         set { ao_setOptional(newValue, pkey: &ViewAssociatedKeys.labelViewState) }
@@ -94,26 +94,6 @@ extension UIImageView {
         super.recoverViewState(forced: forced)
         startTransition { [weak self] in
             self?.image = self?.image == nil || forced ? self?.imageState?.image : self?.image
-        }
-    }
-}
-
-extension UIButton {
-    var buttonState: RecoverableButtonViewState? {
-        get { return ao_get(pkey: &ViewAssociatedKeys.buttonViewState) as? RecoverableButtonViewState }
-        set { ao_setOptional(newValue, pkey: &ViewAssociatedKeys.buttonViewState) }
-    }
-    
-    override func saveViewState() {
-        super.saveViewState()
-        buttonState = RecoverableButtonViewState(view: self)
-    }
-    
-    override func recoverViewState(forced: Bool) {
-        super.recoverViewState(forced: forced)
-        startTransition { [weak self] in
-            self?.setTitle(self?.buttonState?.title, for: .normal)
-            self?.isUserInteractionEnabled = self?.buttonState?.isUserInteractionsEnabled ?? false
         }
     }
 }
