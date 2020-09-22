@@ -70,3 +70,13 @@ fastlane/test_output
 # JetBrains
 
 .idea
+
+# Marriott changes:
+README_*
+fastlane*
+SkeletonView*
+CODE_OF_CONDUCT*
+CONTRIBUTING*
+Configs*
+Gemfile*
+Dangerfile*
