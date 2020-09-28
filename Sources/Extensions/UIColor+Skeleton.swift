@@ -72,7 +72,8 @@ internal extension UIColor {
     static var silver       = UIColor(0xbdc3c7)
     static var asbestos     = UIColor(0x7f8c8d)
     static var lightGray    = UIColor(0xd2d2d2)
-    static var lighterGray  = UIColor(0xeaeaea)
+    static var neutralGray  = UIColor(0xeaeaea)
+    static var lighterGray  = UIColor(0xf2f2f2)
     static var base20White  = UIColor(0xffffff)
 
     static var skeletonDefault: UIColor {
@@ -80,11 +81,11 @@ internal extension UIColor {
             return UIColor { traitCollection in
                 switch traitCollection.userInterfaceStyle {
                 case .dark: return .darkClouds
-                default: return .lightGray
+                default: return .neutralGray
                 }
             }
         } else {
-            return .lightGray
+            return .neutralGray
         }
     }
     static var skeletonShade: UIColor {
@@ -96,7 +97,7 @@ internal extension UIColor {
                 }
             }
         } else {
-            return .base20White
+            return .lighterGray
         }
     }
 }
