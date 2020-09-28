@@ -1,16 +1,6 @@
 ![](Assets/header2.jpg)
 
 <p align="center">
-    <a href="https://github.com/Juanpe/SkeletonView/workflows/build">
-      <img src="https://github.com/Juanpe/SkeletonView/workflows/build/badge.svg">
-    </a>
-    <a href="https://codebeat.co/projects/github-com-juanpe-skeletonview-master"><img alt="codebeat badge" src="https://codebeat.co/badges/f854fdfd-31e5-4689-ba04-075d83653e60" /></a>
-    <img src="http://img.shields.io/badge/dependency%20manager-swiftpm%2Bcocoapods%2Bcarthage-green" />
-    <img src="https://img.shields.io/badge/platforms-ios%2Btvos-green" />
-    <a href="https://badge.bow-swift.io/recipe?name=SkeletonView&description=An%20elegant%20way%20to%20show%20users%20that%20something%20is%20happening%20and%20also%20prepare%20them%20to%20which%20contents%20he%20is%20waiting&url=https://github.com/juanpe/skeletonview&owner=Juanpe&avatar=https://avatars0.githubusercontent.com/u/1409041?v=4&tag=1.8.7"><img src="https://raw.githubusercontent.com/bow-swift/bow-art/master/badges/nef-playgrounds-badge.svg" alt="SkeletonView Playground" style="height:20px"></a>   
-</p>
-
-<p align="center">
     <a href="#-features">Features</a>
   • <a href="#-guides">Guides</a>
   • <a href="#-installation">Installation</a>
@@ -19,18 +9,17 @@
   • <a href="#️-contributing">Contributing</a>
 </p>
 
-**🌎 README is available in other languages:  [🇪🇸](https://github.com/Juanpe/SkeletonView/blob/develop/README_es.md) . [🇨🇳](https://github.com/Juanpe/SkeletonView/blob/master/README_zh.md) . [🇧🇷](https://github.com/Juanpe/SkeletonView/blob/master/README_pt-br.md) . [🇰🇷](https://github.com/Juanpe/SkeletonView/blob/master/README_ko.md) . [🇫🇷](https://github.com/Juanpe/SkeletonView/blob/master/README_fr.md)**
+Skeleton screens, when used to indicate that a screen is loading, are perceived to be of a shorter duration compared to other loading animations.
+Skeleton displays that take advantage of slow, steady movements that move left to right are seen as shorter.
+Apple's native skeleton loader already exists in the SkeletonUI framework, but it can only be used in conjunction with the SwiftUI and Combine frameworks.
 
-Today almost all apps have async processes, such as API requests, long running processes, etc. While the processes are working, usually developers place a loading view to show users that something is going on.
-
-**SkeletonView** has been conceived to address this need, an elegant way to show users that something is happening and also prepare them for which contents are waiting.
+**This Framework has been cloned from SkeletonView [☠️](https://github.com/Juanpe/SkeletonView)** and has been ported for use in ObjC as well as Swift View Controls in the Marriott environment .
 
 Enjoy it! 🙂
 
 
 ## 
 - [🌟 Features](#-features)
-- [🎬 Guides](#-guides)
 - [📲 Installation](#-installation)
 - [🐒 Usage](#-usage)
   - [🌿 Collections](#-collections)
@@ -54,45 +43,26 @@ Enjoy it! 🙂
 * Simple Swift syntax
 * Lightweight readable codebase
 
+## ✔️ Update
+In consultation with Carl, it was decided to use the fat binary framework in order to integrate the Skeleton library into the Marriott project.
+The original source was cloned form here [☠️](https://github.com/Juanpe/SkeletonView), to preserve the history, then Marriott related modifications where applied over.
+If you want to keep Skeleteon code up to date with original one:
+1️⃣ clone/pull the codefrom here.
 
-## 🎬 Guides
+2️⃣ Add original skeleton repo remote: git remote add original-skeleton-repo https://github.com/Juanpe/SkeletonView.git
 
-| [![](https://img.youtube.com/vi/75kgOhWsPNA/maxresdefault.jpg)](https://youtu.be/75kgOhWsPNA)|[![](https://img.youtube.com/vi/MVCiM_VdxVA/maxresdefault.jpg)](https://youtu.be/MVCiM_VdxVA)|[![](https://img.youtube.com/vi/Qq3Evspeea8/maxresdefault.jpg)](https://youtu.be/Qq3Evspeea8)|[![](https://img.youtube.com/vi/ZOoPtBwDRT0/maxresdefault.jpg)](https://youtu.be/ZOoPtBwDRT0)|[![](https://img.youtube.com/vi/Zx1Pg1gPfxA/maxresdefault.jpg)](https://www.youtube.com/watch?v=Zx1Pg1gPfxA)
-|:---:  | :---: |:---:  | :---: | :---:
-|[**SkeletonView Guides - Getting started**](https://youtu.be/75kgOhWsPNA)|[**How to Create Loading View with Skeleton View in Swift 5.2**](https://youtu.be/MVCiM_VdxVA)    by iKh4ever Studio|[**Create Skeleton Loading View in App (Swift 5) - Xcode 11, 2020**](https://youtu.be/Qq3Evspeea8)    by iOS Academy| [**Add An Elegant Loading Animation in Swift***](https://youtu.be/ZOoPtBwDRT0)    by Gary Tokman| [**Cómo crear una ANIMACIÓN de CARGA de DATOS en iOS**](https://www.youtube.com/watch?v=Zx1Pg1gPfxA) by MoureDev
-
+3️⃣ Pull from original repo over our version: git pull original-skeleton-repo
 
 ## 📲 Installation
-
-* [CocoaPods](https://guides.cocoapods.org/using/using-cocoapods.html):
-
-```ruby
-pod 'SkeletonView'
-```
-
-* [Carthage](https://github.com/Carthage/Carthage):
-
-```ruby
-github "Juanpe/SkeletonView"
-```
-
-* [Swift Package Manager](https://swift.org/package-manager/):
-
-```swift
-dependencies: [
-  .package(url: "https://github.com/Juanpe/SkeletonView.git", from: "1.7.0")
-]
-```
-
+1️⃣ clone/pull the code 
 
 ## 🐒 Usage
 
 Only **3** steps needed to use `SkeletonView`:
 
-1️⃣ Import SkeletonView in proper place.
-```swift
-import SkeletonView
-```
+1️⃣ Skeleton has in proper place.
+Cloned here: https://git.marriott.com/mobile/skeleton-ios
+History is preserved.
 
 2️⃣ Now, set which views will be `skeletonables`. You achieve this in two ways:
 
