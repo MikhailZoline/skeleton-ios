@@ -15,8 +15,6 @@ Apple's native skeleton loader already exists in the SkeletonUI framework, but i
 
 **This Framework has been cloned from SkeletonView [☠️](https://github.com/Juanpe/SkeletonView)** and ported for use in ObjC as well as Swift View Controls in the Marriott environment .
 
-Enjoy it! 🙂
-
 
 ## 
 - [🌟 Features](#-features)
@@ -76,24 +74,67 @@ The original source was cloned from here [☠️] (https://github.com/Juanpe/Ske
 
 ## 🏛️ Architecture
 
-**Skeleton views layout**
+### 📑 Skeleton views layout
+
 Here is an illustration that shows how you should specify which elements are skeletonables when you are using an UITableView:
 
 <img src="Assets/tableview_scheme.png" width="700px">
 
-As you can see, `Skeleton` is selective, so if you don't want to show skeleton in all subviews, then don't mark them. The skeleton layer will then not overlay unspecified subviews and they will be rendered as usual.
+As you can see, ```Skeleton``` is selective, so if you don't want to show skeleton in all subviews, then don't mark them. The skeleton layer will then not overlay unspecified subviews and they will be rendered as usual.
 
-📑 **Hierarchy**
+### 📃 Hierarchy
 
-Since `Skeleton` is recursive, it will stop looking for `skeletonable` subviews as soon as a view is not `skeletonable`. 
-In other words if the parent of the view you want to skeltonize is not flagged `skeletonable` then `Skeleton` will never render it.
+Since ```Skeleton``` is recursive, it will stop looking for ```skeletonable``` subviews as soon as a view is not ```skeletonable```. 
+In other words if the parent of the view you want to skeltonize is not flagged ```skeletonable``` then ```Skeleton``` will never render it.
 
+We expect to skeltonize avatarImage and textView but forgot to flag the parent view, then nothing is skeltonized
+<kbd><img src="Assets/container_no_skeletonable.jpg" width="350"/></kbd><kbd><img src="Assets/no_skeletonables_result.png" width="350"/></kbd>
+
+
+Finally the expected result
+
+<kbd><img src="Assets/all_skeletonables.jpg" width="350"/></kbd><kbd><img src="Assets/all_skeletonables_result.png" width="350"/></kbd>
+
+
+The cell container view is marked, but not the subviews
+
+<kbd><img src="Assets/tableview_no_skeletonable.jpg" width="350"/></kbd><kbd><img src="Assets/tableview_no_skeletonable_result.png" width="350" height="235"/></kbd>
+
+
+Everything is marked as skeletonizable
+
+<kbd><img src="Assets/tableview_skeletonable.jpg" width="350"/></kbd><kbd><img src="Assets/tableview_skeletonable_result.png" width="350" height="235"/></kbd>
 
 ## 🐒 Usage
 
+**No inclusion headers** `Skeleton` module is alredy included in Marriott-Prefix.pch and Marriott-Bridging-Header.h
 
-**Skeleton** module is alredy included in Marriott-Prefix.pch and Marriott-Bridging-Header.h
+### 🔠 Texts
 
+![](Assets/multilines2.png)
+
+When using elements with text, ```SkeletonView``` draws lines to simulate text.
+Besides, you can decide how many lines you want. If  ```numberOfLines``` is set to zero, it will calculate how many lines needed to populate the whole skeleton and it will be drawn. Instead, if you set it to one, two or any number greater than zero, it will only draw this number of lines.
+
+You can set some properties for multilines elements.
+
+
+| Property | Values | Default | Preview
+| ------- | ------- |------- | -------
+| **Filling percent** of the last line. | `0...100` | `70%` | ![](Assets/multiline_lastline.png)
+| **Corner radius** of lines. (**NEW**) | `0...10` | `0` | ![](Assets/multiline_corner.png)
+
+
+
+To modify the percent or radius **using code**, set the properties:
+```swift
+descriptionTextView.lastLineFillPercent = 50
+descriptionTextView.linesCornerRadius = 5
+```
+
+Or, if you prefer use **IB/Storyboard**:
+
+![](Assets/multiline_customize.png)
 
 1️⃣ **Using code:**
 set which views will be `skeletonables`
@@ -194,32 +235,7 @@ public protocol SkeletonTableViewDelegate: UITableViewDelegate {
 
 
 
-### 🔠 Texts
 
-![](Assets/multilines2.png)
-
-When using elements with text, ```SkeletonView``` draws lines to simulate text.
-Besides, you can decide how many lines you want. If  ```numberOfLines``` is set to zero, it will calculate how many lines needed to populate the whole skeleton and it will be drawn. Instead, if you set it to one, two or any number greater than zero, it will only draw this number of lines.
-
-You can set some properties for multilines elements.
-
-
-| Property | Values | Default | Preview
-| ------- | ------- |------- | -------
-| **Filling percent** of the last line. | `0...100` | `70%` | ![](Assets/multiline_lastline.png)
-| **Corner radius** of lines. (**NEW**) | `0...10` | `0` | ![](Assets/multiline_corner.png)
-
-
-
-To modify the percent or radius **using code**, set the properties:
-```swift
-descriptionTextView.lastLineFillPercent = 50
-descriptionTextView.linesCornerRadius = 5
-```
-
-Or, if you prefer use **IB/Storyboard**:
-
-![](Assets/multiline_customize.png)
 
 
 ### 🦋 Appearance
