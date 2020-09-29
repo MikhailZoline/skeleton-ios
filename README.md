@@ -13,14 +13,16 @@ Skeleton screens, when used to indicate that a screen is loading, are perceived 
 Skeleton displays that take advantage of slow, steady movements that move left to right are seen as shorter.
 Apple's native skeleton loader already exists in the SkeletonUI framework, but it can only be used in conjunction with the SwiftUI and Combine frameworks.
 
-**This Framework has been cloned from SkeletonView [☠️](https://github.com/Juanpe/SkeletonView)** and has been ported for use in ObjC as well as Swift View Controls in the Marriott environment .
+**This Framework has been cloned from SkeletonView [☠️](https://github.com/Juanpe/SkeletonView)** and ported for use in ObjC as well as Swift View Controls in the Marriott environment .
 
 Enjoy it! 🙂
 
 
 ## 
 - [🌟 Features](#-features)
-- [📲 Installation](#-installation)
+- [✔️ Update](#-Update)
+- [📟 Code](#-Code)
+- [📲 Install](#-Install)
 - [🐒 Usage](#-usage)
   - [🌿 Collections](#-collections)
   - [🔠 Texts](#-texts)
@@ -35,42 +37,70 @@ Enjoy it! 🙂
 
 ## 🌟 Features
 
-* Easy to use
-* All UIViews are skeletonables
-* Fully customizable
-* Universal (iPhone & iPad)
-* Interface Builder friendly
-* Simple Swift syntax
-* Lightweight readable codebase
+* Usable from Objective-C and Swift
+* All skeleton related settings could be defined from Interface Builder
+* Usable in existing screens with minimal modifications
+* Customizable colors and gradient animations
+* Universal (iPhone and iPad)
+* Lightweight readable code base
 
 ## ✔️ Update
-In consultation with Carl, it was decided to use the fat binary framework in order to integrate the Skeleton library into the Marriott project.
-The original source was cloned form here [☠️](https://github.com/Juanpe/SkeletonView), to preserve the history, then Marriott related modifications where applied over.
-If you want to keep Skeleteon code up to date with original one:
-1️⃣ clone/pull the codefrom here.
 
-2️⃣ Add original skeleton repo remote: git remote add original-skeleton-repo https://github.com/Juanpe/SkeletonView.git
+It was decided to use the binary framework in order to integrate the Skeleton library into the Marriott project.
+The original source was cloned from here [☠️] (https://github.com/Juanpe/SkeletonView), with the history preserved, then the Marriott-related changes were applied.
 
-3️⃣ Pull from original repo over our version: git pull original-skeleton-repo
+1️⃣ If you want to update the Skeleteon code with the original: clone / pull the code from this repository.
 
-## 📲 Installation
-1️⃣ clone/pull the code 
+2️⃣ Add the original skeleton remote from the repo: git remote add original-skeleton-repo https://github.com/Juanpe/SkeletonView.git
+
+3️⃣ Pull from original remote: git pull original-skeleton-repo
+
+## 📟 Code
+
+1️⃣ If you want to modify the Skeleteon code with your customizations: you can view and test your modifications with SkeletonDemo.xcodeproj in skeleton_ios, then commit and push to the origin.
+
+## 📲 Install
+
+1️⃣ clone / pull the code from this repository to the same folder where the ios folder is located.
+
+2️⃣ cd skeleton_ios
+
+3️⃣ launch the skeleton framework builder: ../ios/Tools/build_skeleton.sh
+    This script will build and combine binaries for Simulator and iPhone in one framework,
+    it will also copy the newly compiled framework to ios/Marriott/Marriott/Third-Party/Skeleton /
+    
+4️⃣ commit the modified Skeleton binaries in Marriott: 
+    cd ios/
+    git add /Marriott/Marriott/Third-Party/Skeleton/*
+    git commit -m "Updated Skeleton Framework"
+
+## 🏛️ Architecture
+
+**Skeleton views layout**
+Here is an illustration that shows how you should specify which elements are skeletonables when you are using an UITableView:
+
+<img src="Assets/tableview_scheme.png" width="700px">
+
+As you can see, `Skeleton` is selective, so if you don't want to show skeleton in all subviews, then don't mark them. The skeleton layer will then not overlay unspecified subviews and they will be rendered as usual.
+
+📑 **Hierarchy**
+
+Since `Skeleton` is recursive, it will stop looking for `skeletonable` subviews as soon as a view is not `skeletonable`. 
+In other words if the parent of the view you want to skeltonize is not flagged `skeletonable` then `Skeleton` will never render it.
+
 
 ## 🐒 Usage
 
-Only **3** steps needed to use `SkeletonView`:
 
-1️⃣ Skeleton has in proper place.
-Cloned here: https://git.marriott.com/mobile/skeleton-ios
-History is preserved.
+**Skeleton** module is alredy included in Marriott-Prefix.pch and Marriott-Bridging-Header.h
 
-2️⃣ Now, set which views will be `skeletonables`. You achieve this in two ways:
 
-**Using code:**
+1️⃣ **Using code:**
+set which views will be `skeletonables`
 ```swift
 avatarImageView.isSkeletonable = true
 ```
-**Using IB/Storyboards:**
+2️⃣  **Using IB/Storyboards:**
 
 ![](Assets/storyboard.png)
 
@@ -83,46 +113,20 @@ avatarImageView.isSkeletonable = true
 (4) view.showAnimatedGradientSkeleton() // Gradient animated
 ```
 
-**Preview**
+**UICollectionView**
 
-<table>
-<tr>
-<td width="25%">
-<center>Solid</center>
-</td>
-<td width="25%">
-<center>Gradient</center>
-</td>
-<td width="25%">
-<center>Solid Animated</center>
-</td>
-<td width="25%">
-<center>Gradient Animated</center>
-</td>
-</tr>
-<tr>
-<td width="25%">
-<img src="Assets/solid.png"></img>
-</td>
-<td width="25%">
-<img src="Assets/gradient.png"></img>
-</td>
-<td width="25%">
-<img src="Assets/solid_animated.gif"></img>
-</td>
-<td width="25%">
-<img src="Assets/gradient_animated.gif"></img>
-</td>
-</tr>
-</table>
+For `UICollectionView`, you need to conform to `SkeletonCollectionViewDataSource` protocol.
 
+``` swift
+public protocol SkeletonCollectionViewDataSource: UICollectionViewDataSource {
+    func numSections(in collectionSkeletonView: UICollectionView) -> Int // default: 1
+    func collectionSkeletonView(_ skeletonView: UICollectionView, numberOfItemsInSection section: Int) -> Int
+    func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> ReusableCellIdentifier
+    func collectionSkeletonView(_ skeletonView: UICollectionView, supplementaryViewIdentifierOfKind: String, at indexPath: IndexPath) -> ReusableCellIdentifier? // default: nil
+}
+```
 
-> 📣 **IMPORTANT!** 
->
-> `SkeletonView` is recursive, so if you want show the skeleton in all skeletonable views, you only need to call the show method in the main container view. For example, with `UIViewControllers`.
-
-  
-
+The rest of the process is the same as ```UITableView```
 
 ### 🌿 Collections
 
@@ -188,20 +192,6 @@ public protocol SkeletonTableViewDelegate: UITableViewDelegate {
 
   
 
-**UICollectionView**
-
-For `UICollectionView`, you need to conform to `SkeletonCollectionViewDataSource` protocol.
-
-``` swift
-public protocol SkeletonCollectionViewDataSource: UICollectionViewDataSource {
-    func numSections(in collectionSkeletonView: UICollectionView) -> Int // default: 1
-    func collectionSkeletonView(_ skeletonView: UICollectionView, numberOfItemsInSection section: Int) -> Int
-    func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> ReusableCellIdentifier
-    func collectionSkeletonView(_ skeletonView: UICollectionView, supplementaryViewIdentifierOfKind: String, at indexPath: IndexPath) -> ReusableCellIdentifier? // default: nil
-}
-```
-
-The rest of the process is the same as ```UITableView```
 
 
 ### 🔠 Texts
@@ -477,69 +467,7 @@ Then, when the skeleton appears, you can see the view hierarchy in the Xcode con
   
 **Supported OS & SDK Versions**
 
-* iOS 9.0+
-* tvOS 9.0+
+* from iOS 9.0
 * Swift 5
 
 
-## ❤️ Contributing
-This is an open source project, so feel free to contribute. How?
-- Open an [issue](https://github.com/Juanpe/SkeletonView/issues/new).
-- Send feedback via [email](mailto://juanpecatalan.com).
-- Propose your own fixes, suggestions and open a pull request with the changes.
-
-See [all contributors](https://github.com/Juanpe/SkeletonView/graphs/contributors)
-
-For more information, please read the [contributing guidelines](https://github.com/Juanpe/SkeletonView/blob/develop/CONTRIBUTING.md).
-
-
-## 📢 Mentions
-
-- [iOS Dev Weekly #327](https://iosdevweekly.com/issues/327#start)
-- [Hacking with Swift Articles](https://www.hackingwithswift.com/articles/40/skeletonview-makes-loading-content-beautiful)
-- [Top 10 Swift Articles November](https://medium.mybridge.co/swift-top-10-articles-for-the-past-month-v-nov-2017-dfed7861cd65)
-- [30 Amazing iOS Swift Libraries (v2018)](https://medium.mybridge.co/30-amazing-ios-swift-libraries-for-the-past-year-v-2018-7cf15027eee9)
-- [AppCoda Weekly #44](http://digest.appcoda.com/issues/appcoda-weekly-issue-44-81899)
-- [iOS Cookies Newsletter #103](https://us11.campaign-archive.com/?u=cd1f3ed33c6527331d82107ba&id=48131a516d)
-- [Swift Developments Newsletter #113](https://andybargh.com/swiftdevelopments-113/)
-- [iOS Goodies #204](http://ios-goodies.com/post/167557280951/week-204)
-- [Swift Weekly #96](http://digest.swiftweekly.com/issues/swift-weekly-issue-96-81759)
-- [CocoaControls](https://www.cocoacontrols.com/controls/skeletonview)
-- [Awesome iOS Newsletter #74](https://ios.libhunt.com/newsletter/74)
-- [Swift News #36](https://www.youtube.com/watch?v=mAGpsQiy6so)
-- [Best iOS articles, new tools & more](https://medium.com/flawless-app-stories/best-ios-articles-new-tools-more-fcbe673e10d)
-
-
-
-## 👨🏻‍💻 Author
-
-[Juanpe Catalán](http://www.twitter.com/JuanpeCatalan)
-
-<a class="bmc-button" target="_blank" href="https://www.buymeacoffee.com/CDou4xtIK"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy me a coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;"><span style="margin-left:5px"></span></a>
-
-
-## 👮🏻 License
-
-```
-MIT License
-
-Copyright (c) 2017 Juanpe Catalán
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
