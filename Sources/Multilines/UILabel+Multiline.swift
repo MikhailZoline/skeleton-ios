@@ -31,7 +31,7 @@ public extension UILabel {
 	}
 	
     @objc public func numLines() -> Int {
-        return numberOfLines
+        return numberOfLines == 0 ? 2 : numberOfLines
     }
 
     public var lastLineFillingPercent: Int {
