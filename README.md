@@ -9,7 +9,7 @@
   • <a href="#️-contributing">Contributing</a>
 </p>
 
-Skeleton screens, when used to indicate that a screen is loading, are perceived to be of a shorter duration compared to other loading animations.
+Skeleton screens, when used to indicate that a screen is loading, are perceived to be of a shorter duration compared to other loading animations. **Skeleton Screens are focused on the indicator and not the progress**.
 Skeleton displays that take advantage of slow, steady movements that move left to right are seen as shorter.
 Apple's native skeleton loader already exists in the SkeletonUI framework, but it can only be used in conjunction with the SwiftUI and Combine frameworks.
 
@@ -125,11 +125,17 @@ You can set some properties for multilines elements.
 | **Corner radius** of lines. (**NEW**) | `0...10` | `0` | ![](Assets/multiline_corner.png)
 
 
+To specify skelteton relted properies use storyboard:
 
-To modify the percent or radius **using code**, set the properties:
+![](Assets/label_skeleton_fields.png)
+
+Or, if you prefer **using code**, set the properties:
 ```swift
-descriptionTextView.lastLineFillPercent = 50
-descriptionTextView.linesCornerRadius = 5
+label.text = "      " //**Do not leave the text field empty, otherwise the skeleton will not appear**
+label.isSkeletonable = true
+label.linesCornerRadius = 5
+label.skeletonLineSpacing = 6
+label.lastLineFillPercent = 50
 ```
 
 Or, if you prefer use **IB/Storyboard**:
