@@ -2,11 +2,12 @@
 
 <p align="center">
     <a href="#-features">Features</a>
-  • <a href="#-guides">Guides</a>
-  • <a href="#-installation">Installation</a>
+  • <a href="#-update">Update</a>
+  • <a href="#-install">Installation</a>
+  • <a href="#-architecture">Architecture</a>
   • <a href="#-usage">Usage</a>
   • <a href="#-miscellaneous">Miscellaneous</a>
-  • <a href="#️-contributing">Contributing</a>
+
 </p>
 
 Skeleton screens, when used to indicate that a screen is loading, are perceived to be of a shorter duration compared to other loading animations. **Skeleton Screens are focused on the indicator and not the progress**.
@@ -18,10 +19,10 @@ Apple's native skeleton loader already exists in the SkeletonUI framework, but i
 
 ## 
 - [🌟 Features](#-features)
-- [✔️ Update](#-Update)
-- [📟 Code](#-Code)
-- [📲 Install](#-Install)
-- [🏛️ Architecture] (##-🏛️ Architecture)
+- [✔️ Update](#-update)
+- [📟 Code](#-code)
+- [📲 Install](#-install)
+- [🏛️ Architecture](#-architecture)
 - [🐒 Usage](#-usage)
     - [🔠 Texts](#-texts)
     - [🌿 Collections](#-collections)
@@ -102,36 +103,38 @@ Everything is marked as skeletonizable
 ## 🐒 Usage
 
 **No inclusion headers** `Skeleton` module is alredy included in Marriott-Prefix.pch and Marriott-Bridging-Header.h
+**Example** `MRTPropertySearchResultsListViewController` 
 
 ### 🔠 Texts
 
 ![](Assets/multilines2.png)
 
 When using elements with text, ```SkeletonView``` draws lines to simulate text.
-Besides, you can decide how many lines you want. If  ```numberOfLines``` is set to zero, it will calculate how many lines needed to populate the whole skeleton and it will be drawn. Instead, if you set it to one, two or any number greater than zero, it will only draw this number of lines.
-
-You can set some properties for multilines elements.
-
-
-| Property | Values | Default | Preview
-| ------- | ------- |------- | -------
-| **Filling percent** of the last line. | `0...100` | `70%` | ![](Assets/multiline_lastline.png)
-| **Corner radius** of lines. | `0...10` | `0` | ![](Assets/multiline_corner.png)
-
+Besides, you can decide how many lines you want. If  ```numberOfLines``` is set to zero, it will calculate how many lines needed to populate the whole skeleton and it will be drawn. Instead, if you set it to one, two or any number greater than zero, it will only draw this number of lines. 
+📣 **IMPORTANT!** Do not leave the text field empty, otherwise the skeleton will not appear.
 
 To specify skeleton related properies using storyboard:
 
 ![](Assets/label_skeleton_fields.png)
 
 Or, if you prefer **using code**, set the properties:
- 📣 **IMPORTANT!** Do not leave the text field empty, otherwise the skeleton will not appear.
+ 
 ```swift
-labelOrTextFileld.text = "      "
+labelOrTextFileld.text = "      "// Do not leave the text field empty
 labelOrTextFileld.isSkeletonable = true
 labelOrTextFileld.linesCornerRadius = 5
 labelOrTextFileld.skeletonLineSpacing = 6
 labelOrTextFileld.lastLineFillPercent = 50
 ```
+
+`linesCornerRadius` & `lastLineFillPercent` for multilines elements:
+
+| Property | Values | Default | Preview
+| ------- | ------- |------- | -------
+| **Filling percent** of the last line. | `0...100` | `70%` | ![](Assets/multiline_lastline.png)
+| **Corner radius** of lines. | `0...10` | `0` | ![](Assets/multiline_corner.png)
+
+Use `skeletonLineSpacing` to specify the gaps between skelton lines, if needed.
 
 ### 🖼️ Images
 
