@@ -21,17 +21,11 @@ Apple's native skeleton loader already exists in the SkeletonUI framework, but i
 - [✔️ Update](#-Update)
 - [📟 Code](#-Code)
 - [📲 Install](#-Install)
+- [🏛️ Architecture] (##-🏛️ Architecture)
 - [🐒 Usage](#-usage)
-  - [🌿 Collections](#-collections)
-  - [🔠 Texts](#-texts)
-  - [🦋 Appearance](#-appearance)
-  - [🎨 Custom colors](#-custom-colors)
-  - [ 🏃‍♀️ Animations](#%EF%B8%8F-animations)
-  - [🏄 Transitions](#-transitions)
+    - [🔠 Texts](#-texts)
+    - [🌿 Collections](#-collections)
 - [✨ Miscellaneous](#-miscellaneous)
-- [❤️ Contributing](#️-contributing)
-
-
 
 ## 🌟 Features
 
@@ -122,15 +116,15 @@ You can set some properties for multilines elements.
 | Property | Values | Default | Preview
 | ------- | ------- |------- | -------
 | **Filling percent** of the last line. | `0...100` | `70%` | ![](Assets/multiline_lastline.png)
-| **Corner radius** of lines. (**NEW**) | `0...10` | `0` | ![](Assets/multiline_corner.png)
+| **Corner radius** of lines. | `0...10` | `0` | ![](Assets/multiline_corner.png)
 
 
-To specify skelteton related properies use storyboard:
+To specify skeleton related properies using storyboard:
 
 ![](Assets/label_skeleton_fields.png)
 
 Or, if you prefer **using code**, set the properties:
-**Do not leave the text field empty, otherwise the skeleton will not appear**
+ 📣 **IMPORTANT!** Do not leave the text field empty, otherwise the skeleton will not appear.
 ```swift
 labelOrTextFileld.text = "      "
 labelOrTextFileld.isSkeletonable = true
@@ -139,45 +133,13 @@ labelOrTextFileld.skeletonLineSpacing = 6
 labelOrTextFileld.lastLineFillPercent = 50
 ```
 
-Or, if you prefer use **IB/Storyboard**:
+### 🖼️ Images
 
-![](Assets/multiline_customize.png)
+Pretty much the same as for the text field or label except there are no line related fields.
 
-1️⃣ **Using code:**
-set which views will be `skeletonables`
-```swift
-avatarImageView.isSkeletonable = true
-```
-2️⃣  **Using IB/Storyboards:**
-
-![](Assets/storyboard.png)
-
-3️⃣ Once you've set the views, you can show the **skeleton**. To do so, you have **4** choices:
-
-```swift
-(1) view.showSkeleton()                 // Solid
-(2) view.showGradientSkeleton()         // Gradient
-(3) view.showAnimatedSkeleton()         // Solid animated
-(4) view.showAnimatedGradientSkeleton() // Gradient animated
-```
 ### 🌿 Collections
 
 ```SkeletonView``` is compatible with ```UITableView``` and ```UICollectionView```.
-
-**UICollectionView**
-
-For `UICollectionView`, you need to conform to `SkeletonCollectionViewDataSource` protocol.
-
-``` swift
-public protocol SkeletonCollectionViewDataSource: UICollectionViewDataSource {
-    func numSections(in collectionSkeletonView: UICollectionView) -> Int // default: 1
-    func collectionSkeletonView(_ skeletonView: UICollectionView, numberOfItemsInSection section: Int) -> Int
-    func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> ReusableCellIdentifier
-    func collectionSkeletonView(_ skeletonView: UICollectionView, supplementaryViewIdentifierOfKind: String, at indexPath: IndexPath) -> ReusableCellIdentifier? // default: nil
-}
-```
-
-The rest of the process is the same as ```UITableView```
 
 **UITableView**
 
@@ -226,6 +188,21 @@ public protocol SkeletonTableViewDelegate: UITableViewDelegate {
 }
 ```
 
+**UICollectionView**
+
+For `UICollectionView`, you need to conform to `SkeletonCollectionViewDataSource` protocol.
+
+``` swift
+public protocol SkeletonCollectionViewDataSource: UICollectionViewDataSource {
+    func numSections(in collectionSkeletonView: UICollectionView) -> Int // default: 1
+    func collectionSkeletonView(_ skeletonView: UICollectionView, numberOfItemsInSection section: Int) -> Int
+    func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> ReusableCellIdentifier
+    func collectionSkeletonView(_ skeletonView: UICollectionView, supplementaryViewIdentifierOfKind: String, at indexPath: IndexPath) -> ReusableCellIdentifier? // default: nil
+}
+```
+
+The rest of the process is the same as ```UITableView```
+
 > 📣 **IMPORTANT!** 
 > 
 > 1️⃣ If you are using resizable cells (**`tableView.rowHeight = UITableViewAutomaticDimension`**), it's mandatory define the **`estimatedRowHeight`**.
@@ -236,45 +213,17 @@ public protocol SkeletonTableViewDelegate: UITableViewDelegate {
 > self.addSubview(titleLabel) ❌
 > ```
 
-### 🏄 Transitions
-
-**SkeletonView** has built-in transitions to **show** or **hide** the skeletons in a *smoother* way 🤙
-
-To use the transition, simply add the ```transition``` parameter to your ```showSkeleton()``` or ```hideSkeleton()``` function with the transition time, like this:
+3️⃣ Once you've set the views, you can show the **skeleton**. To do so, you have **4** choices:
 
 ```swift
-view.showSkeleton(transition: .crossDissolve(0.25))     //Show skeleton cross dissolve transition with 0.25 seconds fade time
-view.hideSkeleton(transition: .crossDissolve(0.25))     //Hide skeleton cross dissolve transition with 0.25 seconds fade time
-
+(1) view.showSkeleton()                 // Solid
+(2) view.showGradientSkeleton()         // Gradient
+(3) view.showAnimatedSkeleton()         // Solid animated
+(4) view.showAnimatedGradientSkeleton() // Gradient animated
 ```
-
-The default value is  `crossDissolve(0.25)`
-
-**Preview**
-
-<table>
-<tr>
-<td width="50%">
-<center>None</center>
-</td>
-<td width="50%">
-<center>Cross dissolve</center>
-</td>
-</tr>
-<tr>
-<td width="50%">
-<img src="Assets/skeleton_transition_nofade.gif"></img>
-</td>
-<td width="50%">
-<img src="Assets/skeleton_transition_fade.gif"></img>
-</td>
-</tr>
-</table>
-
 
 ## ✨ Miscellaneous 
 
-  
 **Supported OS & SDK Versions**
 
 * from iOS 9.0
