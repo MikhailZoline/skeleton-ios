@@ -125,17 +125,18 @@ You can set some properties for multilines elements.
 | **Corner radius** of lines. (**NEW**) | `0...10` | `0` | ![](Assets/multiline_corner.png)
 
 
-To specify skelteton relted properies use storyboard:
+To specify skelteton related properies use storyboard:
 
 ![](Assets/label_skeleton_fields.png)
 
 Or, if you prefer **using code**, set the properties:
+**Do not leave the text field empty, otherwise the skeleton will not appear**
 ```swift
-label.text = "      " //**Do not leave the text field empty, otherwise the skeleton will not appear**
-label.isSkeletonable = true
-label.linesCornerRadius = 5
-label.skeletonLineSpacing = 6
-label.lastLineFillPercent = 50
+labelOrTextFileld.text = "      "
+labelOrTextFileld.isSkeletonable = true
+labelOrTextFileld.linesCornerRadius = 5
+labelOrTextFileld.skeletonLineSpacing = 6
+labelOrTextFileld.lastLineFillPercent = 50
 ```
 
 Or, if you prefer use **IB/Storyboard**:
@@ -159,6 +160,9 @@ avatarImageView.isSkeletonable = true
 (3) view.showAnimatedSkeleton()         // Solid animated
 (4) view.showAnimatedGradientSkeleton() // Gradient animated
 ```
+### 🌿 Collections
+
+```SkeletonView``` is compatible with ```UITableView``` and ```UICollectionView```.
 
 **UICollectionView**
 
@@ -174,11 +178,6 @@ public protocol SkeletonCollectionViewDataSource: UICollectionViewDataSource {
 ```
 
 The rest of the process is the same as ```UITableView```
-
-### 🌿 Collections
-
-```SkeletonView``` is compatible with ```UITableView``` and ```UICollectionView```.
-
 
 **UITableView**
 
@@ -237,126 +236,6 @@ public protocol SkeletonTableViewDelegate: UITableViewDelegate {
 > self.addSubview(titleLabel) ❌
 > ```
 
-  
-
-
-
-
-
-
-### 🦋 Appearance
-
-The skeletons have a default appearance. So, when you don't specify the color, gradient or multilines properties, `SkeletonView` uses the default values.
-
-Default values:
-- **tintColor**: UIColor
-    - *default: `.skeletonDefault` (same as `.clouds` but adaptive to dark mode)*
-- **gradient**: SkeletonGradient
-  - *default: `SkeletonGradient(baseColor: .skeletonDefault)`*
-- **multilineHeight**: CGFloat
-  - *default: 15*
-- **multilineSpacing**: CGFloat
-  - *default: 10*
-- **multilineLastLineFillPercent**: Int
-  - *default: 70*
-- **multilineCornerRadius**: Int
-  - *default: 0*
-- **skeletonCornerRadius**: CGFloat (IBInspectable)  (Make your skeleton view with corner)
-  - *default: 0*
-
-To get these default values you can use `SkeletonAppearance.default`. Using this property you can set the values as well:
-```swift
-SkeletonAppearance.default.multilineHeight = 20
-SkeletonAppearance.default.tintColor = .green
-```
-
-You can also specifiy these line appearance properties on a per-label basis:
-- **lastLineFillPercent**: Int
-- **linesCornerRadius**: Int
-- **skeletonLineSpacing**: CGFloat
-- **skeletonPaddingInsets**: UIEdgeInsets
-
-
-### 🎨 Custom colors
-
-You can decide which color the skeleton is tinted with. You only need to pass as a parameter the color or gradient you want.
-
-**Using solid colors**
-```swift
-view.showSkeleton(usingColor: UIColor.gray) // Solid
-// or
-view.showSkeleton(usingColor: UIColor(red: 25.0, green: 30.0, blue: 255.0, alpha: 1.0))
-```
-**Using gradients**
-``` swift
-let gradient = SkeletonGradient(baseColor: UIColor.midnightBlue)
-view.showGradientSkeleton(usingGradient: gradient) // Gradient
-```
-
-Besides, **SkeletonView** features 20 flat colors 🤙🏼
-
-```UIColor.turquoise, UIColor.greenSea, UIColor.sunFlower, UIColor.flatOrange  ...```
-
-![](Assets/flatcolors.png)
-###### Image captured from website [https://flatuicolors.com](https://flatuicolors.com)
-
-
-### 🏃‍♀️ Animations
-
-**SkeletonView** has two built-in animations, *pulse* for solid skeletons and *sliding* for gradients.
-
-Besides, if you want to do your own skeleton animation, it's really easy.
-
-
-Skeleton provides the `showAnimatedSkeleton` function which has a ```SkeletonLayerAnimation``` closure where you can define your custom animation.
-
-```swift
-public typealias SkeletonLayerAnimation = (CALayer) -> CAAnimation
-```
-
-You can call the function like this:
-
-```swift
-view.showAnimatedSkeleton { (layer) -> CAAnimation in
-  let animation = CAAnimation()
-  // Customize here your animation
-
-  return animation
-}
-```
-
-It's available ```SkeletonAnimationBuilder```. It's a builder to make ```SkeletonLayerAnimation```.
-
-Today, you can create **sliding animations** for gradients, deciding the **direction** and setting the **duration** of the animation (default = 1.5s).
-
-```swift
-// func makeSlidingAnimation(withDirection direction: GradientDirection, duration: CFTimeInterval = 1.5) -> SkeletonLayerAnimation
-
-let animation = SkeletonAnimationBuilder().makeSlidingAnimation(withDirection: .leftToRight)
-view.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation)
-
-```
-
-```GradientDirection``` is an enum, with theses cases:
-
-|  Direction | Preview
-|------- | -------
-| .leftRight | ![](Assets/sliding_left_to_right.gif)
-| .rightLeft | ![](Assets/sliding_right_to_left.gif)
-| .topBottom | ![](Assets/sliding_top_to_bottom.gif)
-| .bottomTop | ![](Assets/sliding_bottom_to_top.gif)
-| .topLeftBottomRight | ![](Assets/sliding_topLeft_to_bottomRight.gif)
-| .bottomRightTopLeft | ![](Assets/sliding_bottomRight_to_topLeft.gif)
-
-> **😉 TRICK!**
->
-> Exist another way to create sliding animations, just using this shortcut:
-> ```swift
-> let animation = GradientDirection.leftToRight.slidingAnimation()
-> ```
-
-  
-
 ### 🏄 Transitions
 
 **SkeletonView** has built-in transitions to **show** or **hide** the skeletons in a *smoother* way 🤙
@@ -394,97 +273,6 @@ The default value is  `crossDissolve(0.25)`
 
 
 ## ✨ Miscellaneous 
-
-  
-
-**Hierarchy**
-
-Since ```SkeletonView``` is recursive, and we want skeleton to be very efficient, we want to stop recursion as soon as possible. For this reason, you must set the container view as `Skeletonable`, because Skeleton will stop looking for `skeletonable` subviews as soon as a view is not Skeletonable, breaking then the recursion.
-
-Because an image is worth a thousand words:
-
-In this example we have a `UIViewController` with a `ContainerView` and a `UITableView`. When the view is ready, we show the skeleton using this method:
-```
-view.showSkeleton()
-```
-
-> ```isSkeletonable```= ☠️
-
-| Configuration | Result|
-|:-------:|:-------:|
-|<img src="Assets/no_skeletonable.jpg" width="350"/> | <img src="Assets/no_skeletonables_result.png" width="350"/>|
-|<img src="Assets/container_no_skeletonable.jpg" width="350"/> | <img src="Assets/no_skeletonables_result.png" width="350"/>|
-|<img src="Assets/container_skeletonable.jpg" width="350"/> | <img src="Assets/container_skeletonable_result.png" width="350"/>|
-|<img src="Assets/all_skeletonables.jpg" width="350"/>| <img src="Assets/all_skeletonables_result.png" width="350"/>|
-|<img src="Assets/tableview_no_skeletonable.jpg" width="350"/> | <img src="Assets/tableview_no_skeletonable_result.png" height="350"/>|
-|<img src="Assets/tableview_skeletonable.jpg" width="350"/> | <img src="Assets/tableview_skeletonable_result.png" height="350"/>|
-
-  
-
-**Hierarchy in collections**
-
-Here is an illustration that shows how you should specify which elements are skeletonables when you are using an `UITableView`:
-
-<img src="Assets/tableview_scheme.png" width="700px">
-
-As you can see, we have to make skeletonable the tableview, the cell and the UI elements, but we don't need to set as skeletonable the `contentView`
-
-  
-
-**Skeleton views layout**
-
-Sometimes skeleton layout may not fit your layout because the parent view bounds have changed. ~For example, rotating the device.~
-
-You can relayout the skeleton views like so:
-
-```swift
-override func viewDidLayoutSubviews() {
-    view.layoutSkeletonIfNeeded()
-}
-```
-
-> 📣 **IMPORTANT!** 
-> 
-> You shouldn't call this method. From **version 1.8.1** you don't need to call this method, the library does automatically. So, you can use this method **ONLY** in the cases when you need to update the layout of the skeleton manually.
-
-
-  
-
-**Update skeleton**
-
-You can change the skeleton configuration at any time like its colour, animation, etc. with the following methods:
-
-```swift
-(1) view.updateSkeleton()                 // Solid
-(2) view.updateGradientSkeleton()         // Gradient
-(3) view.updateAnimatedSkeleton()         // Solid animated
-(4) view.updateAnimatedGradientSkeleton() // Gradient animated
-```
-
-
-**Debug**
-
-To facilitate the debug tasks when something is not working fine. **`SkeletonView`** has some new tools.
-
-First, `UIView` has available a new property with his skeleton info:
-```swift
-var skeletonDescription: String
-
-```
-The skeleton representation looks like this:
-
-![](Assets/debug_description.png)
-
-Besides, you can activate the new **debug mode**. You just add the environment variable `SKELETON_DEBUG` and activate it.
-
-![](Assets/debug_mode.png)
-
-Then, when the skeleton appears, you can see the view hierarchy in the Xcode console.
-
-<details>
-<summary>Open to see an output example </summary>
-<img src="Assets/hierarchy_output.png" />
-</details>
 
   
 **Supported OS & SDK Versions**
