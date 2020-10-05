@@ -102,8 +102,9 @@ Everything is marked as skeletonizable
 
 ## 🐒 Usage
 
-**No inclusion headers** `Skeleton` module is alredy included in Marriott-Prefix.pch and Marriott-Bridging-Header.h
-**Example** `MRTPropertySearchResultsListViewController` 
+**Marriott integration example is in `MRTPropertySearchResultsListViewController`** and **`FlexibleDatesCell.swift`** in this PR [☠️](https://git.marriott.com/mobile/ios/pull/5231)
+
+`Skeleton` module is alredy included in Marriott-Prefix.pch and Marriott-Bridging-Header.h, so no inclusions are necessary to use it.
 
 ### 🔠 Texts
 
@@ -143,6 +144,10 @@ Pretty much the same as for the text field or label except there are no line rel
 ### 🌿 Collections
 
 ```SkeletonView``` is compatible with ```UITableView``` and ```UICollectionView```.
+
+Pls see `MRTPropertySearchResultsListViewController` for **SkeletonCollectionDataSource** implementation,
+`MRTSearchResultsFlow.storyboard` & `MRTPropertySearchResultListCell.xib` for **Skeleton IBInspectables** & 
+in this PR [☠️](https://git.marriott.com/mobile/ios/pull/5231)
 
 **UITableView**
 
@@ -223,6 +228,15 @@ The rest of the process is the same as ```UITableView```
 (2) view.showGradientSkeleton()         // Gradient
 (3) view.showAnimatedSkeleton()         // Solid animated
 (4) view.showAnimatedGradientSkeleton() // Gradient animated
+```
+
+4️⃣ To hide **skeleton** and return to normal view:
+
+```swift
+rateLabel.hideSkeleton()
+```
+```obj-c
+[self.collectionView hideSkeletonWithReloadDataAfter:YES transition:[[SkeletonTransitionStyle alloc] init:0] ];
 ```
 
 ## ✨ Miscellaneous 
